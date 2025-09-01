@@ -1,4 +1,6 @@
 import userModel from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import JWT from 'jsonwebtoken';
 
 const registerController = async(req,res)=>{
     try{
@@ -15,18 +17,34 @@ const registerController = async(req,res)=>{
             return res.status(500).send({
                 success:false,
                 message:'Email is already registered please login again.',
-            })
+            });
         }
-        const user = await userModel.create({username,email,password,address,phone})
+
+         //hashing password 
+        var salt = await bcrypt.genSalt(10); // here 10 means the level of the hashing like if the number is higher then more time it will take to hash.
+        const hashedPassword = await bcrypt.hash(password,salt);
+
+
+
+       //create user
+        const user = await userModel.create({
+            username,
+            email,
+            password:hashedPassword,
+            address,
+            phone,
+        })
         res.status(201).send({
             success:true,
             message:'Successfully Registered',
             user,
         })
 
+ 
+       
     }catch(error){
         console.log(error)
-        res.send(500).send({
+        res.status(500).send({
             success:false,
             message:'Error in Register API',
         })
@@ -49,18 +67,35 @@ const loginController = async(req,res)=>{
         }
 
         //check user
-        const user = await userModel.findOne({email:email,password:password})
+        const user = await userModel.findOne({email})
         if(!user){
             return res.status(404).send({
                 success:false,
                 message:'User not found',
-            })
+            });
         }
+
+        // check user password | compare password
+
+        const ismatch = await bcrypt.compare(password, user.password);
+        if(!ismatch){
+            return res.status(500).send({
+                success:false,
+                message:'Invalid credentials'
+            });
+        }
+
+        // token 
+        const token = JWT.sign({id:user._id},process.env.JWT_SECRET,{
+            expiresIn:"7d"
+        });// so here we are using the jwt to hash the token using id of the user.
+        user.password =undefined;
         res.status(200).send({
             success:true,
             message:'Login successfull',
+            token,
             user,
-        })
+        });
 
     }catch (error){
         console.log(error)
@@ -74,3 +109,5 @@ const loginController = async(req,res)=>{
 
 }
 export { registerController , loginController }; // here we are exporting more than one controller file so we cannot export default here.
+// jwt is used ot create a protected route between the user and the data, it will create a token and that token will be used to verify the 
+// the authencity of the user.
