@@ -1,9 +1,16 @@
 import express from 'express';
-import { getUserController } from '../controllers/user.controller.js';
+import { getUserController, updateUserController } from '../controllers/user.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
-const userRoutes = express.Router();
+const router = express.Router();
 
 //get user data
-userRoutes.get('/getuser',authMiddleware,getUserController)
+router.get('/getUser',authMiddleware,getUserController);
 
-export default userRoutes;
+router.put('/updateUser',authMiddleware,updateUserController);
+
+
+
+
+
+
+export default router;

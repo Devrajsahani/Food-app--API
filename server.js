@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 import test_routes from './routes/test_routes.js';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
-import userRouter from './routes/user.routes.js';
 import userRoutes from './routes/user.routes.js';
 
 //dot en configuration 
