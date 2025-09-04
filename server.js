@@ -6,7 +6,7 @@ import test_routes from './routes/test_routes.js';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
-import restaurentRoutes from './routes/restaurent.routes.js'
+import restaurentRoutes from './routes/restaurant.routes.js'
 
 //dot en configuration 
 dotenv.config()
