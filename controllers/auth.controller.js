@@ -4,8 +4,8 @@ import JWT from 'jsonwebtoken';
 
 const registerController = async(req,res)=>{
     try{
-        const {username, email, password, phone, address}=req.body
-        if (!username || !email || !password || !address || !phone){
+        const {username, email, password, phone, address, answer}=req.body
+        if (!username || !email || !password || !address || !phone || !answer){
             return res.status(500).send({
                 success:false,
                 message:'Please provide all fields'
@@ -33,6 +33,7 @@ const registerController = async(req,res)=>{
             password:hashedPassword,
             address,
             phone,
+            answer,
         })
         res.status(201).send({
             success:true,
