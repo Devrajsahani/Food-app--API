@@ -6,6 +6,7 @@ import test_routes from './routes/test_routes.js';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
+import restaurentRoutes from './routes/restaurent.routes.js'
 
 //dot en configuration 
 dotenv.config()
@@ -27,6 +28,7 @@ app.use(morgan('dev'));
 app.use('/api/v1/test',test_routes);
 app.use('/api/v1/auth',authRoutes);
 app.use('/api/v1/user',userRoutes);
+app.use('/api/v1/restaurent',restaurentRoutes);
 //http://localhost:5500
 app.get('/',(req,res)=>{
     return res.status(200).send("<h1>Welcome to Food server app</h1>");
