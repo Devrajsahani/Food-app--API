@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserController, resetPasswordController, updatePasswordController, updateUserController } from '../controllers/user.controller.js';
+import { deleteProfileController, getUserController, resetPasswordController, updatePasswordController, updateUserController } from '../controllers/user.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
 const router = express.Router();
 
@@ -13,6 +13,9 @@ router.post('/resetPassword',authMiddleware,resetPasswordController);
 
 // update password 
 router.post('/updatePassword',authMiddleware,updatePasswordController);
+
+// delete user
+router.delete('/deleteUser/:id',authMiddleware,deleteProfileController);
 
 
 
