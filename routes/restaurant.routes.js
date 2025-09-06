@@ -21,5 +21,6 @@ router.get('/get/:id',authMiddleware,getRestaurantByIdController);
 // delete restaurant 
 router.delete('/delete/:id',authMiddleware,deleteRestaurantController);
 
-
+//delete food 
+router.put('/delete/:id',authMiddleware,)
 export default router;
