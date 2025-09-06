@@ -1,4 +1,5 @@
 import foodModel from "../models/food.model.js";
+import orderModel from "../models/order.model.js";
 
 // create food 
 const createFoodController = async(req,res)=>{
@@ -232,8 +233,79 @@ const deletefoodController = async(req,res)=>{
             success:false,
             message:'Error in delete food api',
             error
-        })
+        });
     }
+}
+
+const placeOrderController = async(req,res)=>{
+    try{
+        const {cart }= req.body;
+        if(!cart ){
+            return res.status(500).send({
+                success:false,
+                message:'Please add cart or payment method '
+            });
+        }
+        let total = 0;
+        // cal
+
+        cart.map((i) => {
+            total += i.price
+        });
+        // here we can use more cleaner code that is by usign reduce map fiter 
+        // const total = cart.reduce((sum, i) => sum + i.price, 0);
+
+
+        const newOrder = await orderModel({
+            foods:cart,
+            payment:total,
+            buyer:req.body.id,
+        });
+        res.status(201).send({
+            success:true,
+            message:'Order placed successfully',
+            newOrder
+        });
+
+        await newOrder.save();
+
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:'Order not found',
+            error
+        });
+
+    }
+
+}
+// change order status
+const orderStatusController = async(req,res)=>{
+     try{
+        const orderId = req.params.id
+        if(!orderId){
+            return res.status(404).send({
+                success:false,
+                message:'Please provide valid order id',
+                error
+            });
+        }
+        const {status}= req.body
+
+        const order = await orderModel.findByIdAndUpdate(orderId,{status},{new:true});
+        res.status(200).send({
+            success:'true',
+            message:'order Status updated successfully'
+        })
+     }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:'Error in order status API',
+            error
+        })
+     }
 }
 
 export { createFoodController,
@@ -242,4 +314,6 @@ export { createFoodController,
      getFoodByRestaurantController, 
      updateFoodController,
      deletefoodController,
+     placeOrderController,
+     orderStatusController
     };

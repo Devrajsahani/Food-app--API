@@ -5,9 +5,13 @@ import { createFoodController,
     getAllfoodController, 
     getFoodByRestaurantController, 
     getSingleFoodController, 
+    orderStatusController, 
+    placeOrderController, 
     updateFoodController
     
 } from '../controllers/food.controller.js';
+import { Admin } from 'mongodb';
+import adminMiddleware from '../middleware/admin.middleware.js';
 
 const router = express.Router();
 // routes
@@ -28,6 +32,12 @@ router.put('/update/:id',authMiddleware,updateFoodController);
 
 //detele food 
 router.delete('/delete/:id',authMiddleware,deletefoodController);
+
+//place order
+router.post('/placeorder',authMiddleware,placeOrderController);
+
+// order status
+router.post('/orderstatus/:id',adminMiddleware,authMiddleware,orderStatusController);
 
 
 export default router;
