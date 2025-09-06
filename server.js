@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import restaurentRoutes from './routes/restaurant.routes.js';
 import categoryRoutes from './routes/category.route.js';
+import foodRoutes from './routes/food.routes.js';
 
 //dot en configuration 
 dotenv.config()
@@ -31,6 +32,7 @@ app.use('/api/v1/auth',authRoutes);
 app.use('/api/v1/user',userRoutes);
 app.use('/api/v1/restaurent',restaurentRoutes);
 app.use('/api/v1/category',categoryRoutes);
+app.use('/api/v1/food',foodRoutes);
 //http://localhost:5500
 app.get('/',(req,res)=>{
     return res.status(200).send("<h1>Welcome to Food server app</h1>");
